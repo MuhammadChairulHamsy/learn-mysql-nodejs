@@ -24,6 +24,7 @@
             <th scope="col">jurusan</th>
             <th scope="col">angkatan</th>
             <th scope="col">alamat</th>
+            <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -35,47 +36,60 @@
             <td><%= mhs.jurusan %></td>
             <td><%= mhs.angkatan %></td>
             <td><%= mhs.alamat %></td>
+            <td class="text-center">
+              <a
+                href="/mahasiswa/edit/<%= mhs.nim %>"
+                class="btn btn-warning btn-sm"
+                >Edit</a
+              >
+            </td>
           </tr>
           <% }) %>
         </tbody>
       </table>
 
-      <form action="/api/mahasiswa/tambah" method="post">
-        <h4>Tambah Mahasiswa Baru</h4>
-        <div class="row mb-3">
-          <label for="nim" class="col-sm-2 col-form-label">Nim</label>
-          <div class="col-sm-10">
-            <input type="number" name="nim" class="form-control" />
+      <div class="mt-3">
+        <form action="/api/mahasiswa/tambah" method="post">
+          <h4>Tambah Mahasiswa Baru</h4>
+          <div class="row mb-3">
+            <label for="nim" class="col-sm-2 col-form-label">Nim</label>
+            <div class="col-sm-10">
+              <input type="number" name="nim" class="form-control" />
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <label for="nama" class="col-sm-2 col-form-label">Nama Lengkap</label>
-          <div class="col-sm-10">
-            <input type="text" name="nama" class="form-control" />
+          <div class="row mb-3">
+            <label for="nama" class="col-sm-2 col-form-label"
+              >Nama Lengkap</label
+            >
+            <div class="col-sm-10">
+              <input type="text" name="nama" class="form-control" />
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <label for="jurusan" class="col-sm-2 col-form-label">Jurusan</label>
-          <div class="col-sm-10">
-            <input type="text" name="jurusan" class="form-control" />
+          <div class="row mb-3">
+            <label for="jurusan" class="col-sm-2 col-form-label">Jurusan</label>
+            <div class="col-sm-10">
+              <input type="text" name="jurusan" class="form-control" />
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <label for="angkatan" class="col-sm-2 col-form-label">Angkatan</label>
-          <div class="col-sm-10">
-            <input type="number" name="angkatan" class="form-control" />
+          <div class="row mb-3">
+            <label for="angkatan" class="col-sm-2 col-form-label"
+              >Angkatan</label
+            >
+            <div class="col-sm-10">
+              <input type="number" name="angkatan" class="form-control" />
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <label for="alamat" class="col-sm-2 col-form-label"
-            >Alamat Lengkap</label
-          >
-          <div class="col-sm-10">
-            <input type="text" name="alamat" class="form-control" />
+          <div class="row mb-3">
+            <label for="alamat" class="col-sm-2 col-form-label"
+              >Alamat Lengkap</label
+            >
+            <div class="col-sm-10">
+              <input type="text" name="alamat" class="form-control" />
+            </div>
           </div>
-        </div>
-        <input type="submit" class="btn btn-primary" value="Tambahkan" />
-      </form>
+          <button type="submit" class="btn btn-primary">Tambahkan</button>
+        </form>
+      </div>
     </div>
 
     <script
