@@ -60,7 +60,7 @@ export const updateMahasiswa = async (req, res) => {
         .send("Mahasiswa tidak ditemukan atau data tidak berubah");
     }
 
-    res.redirect("/mahasiswa"); // kembali ke halaman daftar
+    res.redirect("/mahasiswa"); 
   } catch (error) {
     console.error("Update error:", error);
     res.status(500).send("Gagal menyimpan perubahan");
@@ -83,3 +83,22 @@ export const tambahMahasiswa = async (req, res) => {
     res.status(500).send("Gagal menambahkan mahasiswa");
   }
 };
+
+
+export const deleteMahasiswa =  async (req, res) => {
+  try {
+    const {nim} = req.params;
+
+    const sql = `DELETE FROM mahasiswa WHERE nim = ?`;
+    const [result] = await db.query(sql, [nim]);
+
+    if(result.affectedRows === 0) {
+      res.status(404).send("Mahasiswa tidak di temukan");
+    }
+
+    res.redirect("/mahasiswa");
+  } catch (error) {
+    console.error("Delete error: ", error);
+    res.status(500).send("Gagal menghapus mahasiswa")
+  }
+}

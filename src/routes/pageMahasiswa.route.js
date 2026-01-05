@@ -3,20 +3,23 @@ import {
   getMahasiswaPage,
   getEditPage,
   updateMahasiswa,
-  tambahMahasiswa
+  tambahMahasiswa,
+  deleteMahasiswa,
 } from "../controllers/pageMahasiswa.controller.js";
 
 const router = express.Router();
 
 // Halaman utama / daftar mahasiswa
-router.get("/", getMahasiswaPage);           // opsional: akses dari root
-router.get("/mahasiswa", getMahasiswaPage);  // akses dari /mahasiswa
+router.get("/", getMahasiswaPage);
+router.get("/mahasiswa", getMahasiswaPage);
 
 // Form tambah mahasiswa (POST dari halaman daftar)
 router.post("/mahasiswa/tambah", tambahMahasiswa);
 
 // Halaman edit
-router.get("/mahasiswa/edit/:nim", getEditPage);        // GET form edit
-router.post("/mahasiswa/edit/:nim", updateMahasiswa);    // POST update data
+router.get("/mahasiswa/edit/:nim", getEditPage);
+router.post("/mahasiswa/edit/:nim", updateMahasiswa);
+
+router.post("/mahasiswa/hapus/:nim", deleteMahasiswa);
 
 export default router;

@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="container">
-      <h3><%= title %></h3>
+      <h3 class="mt-3"><%= title %></h3>
 
       <table class="table">
         <thead>
@@ -24,7 +24,7 @@
             <th scope="col">jurusan</th>
             <th scope="col">angkatan</th>
             <th scope="col">alamat</th>
-            <th scope="col">Aksi</th>
+            <th scope="col" class="text-center">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -42,6 +42,16 @@
                 class="btn btn-warning btn-sm"
                 >Edit</a
               >
+              <form
+                action="/mahasiswa/hapus/<%= mhs.nim %>"
+                method="post"
+                style="display: inline"
+                onsubmit="return confirm('Yakin ingin menghapus mahasiswa <%= mhs.nama %> (NIM: <%= mhs.nim %>)? Data akan hilang permanen!');"
+              >
+                <button type="submit" class="btn btn-danger btn-sm">
+                  Hapus
+                </button>
+              </form>
             </td>
           </tr>
           <% }) %>
