@@ -6,7 +6,7 @@ export const getMahasiswaPage = async (req, res) => {
     const [rows] = await db.query("SELECT * FROM mahasiswa ORDER BY nim");
     res.render("index", {
       mahasiswa: rows,
-      title: "Daftar Mahasiswa",
+      title: "Dashboard",
     });
   } catch (error) {
     console.error("Database error:", error);

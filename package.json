@@ -1,5 +1,5 @@
 {
-  "name": "tutorial-db-nodejs",
+  "name": "crud-express-mysql",
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",
