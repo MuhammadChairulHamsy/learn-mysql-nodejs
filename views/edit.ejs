@@ -1,102 +1,261 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Belajar Nodejs Mysql</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <div class="container mt-5">
-      <h3><%= title %> - <%= mahasiswa.nim %></h3>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> - Sistem Manajemen Mahasiswa</title>
 
-      <form action="/mahasiswa/edit/<%= mahasiswa.nim %>" method="post">
-        <div class="row mb-3">
-          <label for="nim" class="col-sm-2 col-form-label">Nim</label>
-          <div class="col-sm-10">
-            <input
-              type="number"
-              name="nim"
-              class="form-control"
-              value="<%= mahasiswa.nim %>"
-              disabled
-            />
-            <small class="text-muted">NIM tidak dapat diubah</small>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    .gradient-header {
+      background: linear-gradient(135deg, #3b82f6, #0062ff);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .text-primary-foreground { color: white !important; }
+    .bg-primary-foreground-20 { background-color: rgba(255, 255, 255, 0.2); }
+
+    /* Card styling mirip Tailwind shadow-card */
+    .card-custom {
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+    
+    .card-header-custom {
+      background-color: rgba(0, 0, 0, 0.02);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 1rem 1.5rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      font-size: 0.875rem;
+    }
+
+    .required-mark {
+      color: #dc3545;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.15);
+    }
+
+    .btn-back {
+      color: #6b7280;
+      text-decoration: none;
+      padding: 0.5rem 0;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.2s;
+      background: transparent;
+      border: none;
+    }
+
+    .btn-back:hover {
+      color: #374151;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-success-custom {
+      background-color: #10b981;
+      border-color: #10b981;
+      color: white;
+    }
+
+    .btn-success-custom:hover {
+      background-color: #059669;
+      border-color: #059669;
+      color: white;
+    }
+
+    .btn-cancel {
+      background-color: #6b7280;
+      border-color: #6b7280;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: #4b5563;
+      border-color: #4b5563;
+      color: white;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+  <!-- HEADER / NAVBAR (TIDAK DIRUBAH) -->
+  <header class="gradient-header shadow-sm sticky-top">
+    <nav class="navbar navbar-expand-md">
+      <div class="container-fluid px-5">
+        <a class="navbar-brand d-flex align-items-center text-white text-decoration-none" href="#">
+          <div class="bg-primary-foreground-20 p-1 rounded-3 me-3 d-flex align-items-center justify-content-center">
+            <i class="bi bi-mortarboard-fill fs-4"></i>
+          </div>
+          <div>
+            <h1 class="h5 mb-0 fw-bold text-primary-foreground">Sistem Manajemen Mahasiswa</h1>
+            <p class="mb-0 small text-white opacity-75">STMIK KAPUTAMA</p>
+          </div>
+        </a>
+        <div class="d-none d-md-flex align-items-center text-white small">
+          <span class="me-3 opacity-90">Admin Panel</span>
+          <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary-foreground-20" style="width: 2rem; height: 2rem; font-size: 0.8rem;">
+            AD
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container py-4 flex-grow-1">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+
+        <!-- Back Button -->
+        <a href="/mahasiswa" class="btn-back mb-3">
+          <i class="bi bi-arrow-left me-2"></i>
+          Kembali ke Daftar Mahasiswa
+        </a>
+
+        <!-- Card Edit -->
+        <div class="card card-custom animate-fade-in">
+          <div class="card-header-custom">
+            <h2 class="h5 mb-1 fw-semibold text-dark">Edit Data Mahasiswa</h2>
+            <p class="text-muted small mb-0">Perbarui informasi mahasiswa di bawah ini</p>
+          </div>
+
+          <div class="card-body p-4">
+            <form action="/mahasiswa/edit/<%= mahasiswa.nim %>" method="post">
+
+              <div class="row g-4">
+                <!-- NIM -->
+                <div class="col-md-6">
+                  <label for="nim" class="form-label">
+                    NIM <span class="required-mark">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="nim" 
+                    name="nim" 
+                    value="<%= mahasiswa.nim %>"
+                    placeholder="Contoh: 22451010"
+                    maxlength="8"
+                    required>
+                </div>
+
+                <!-- Nama Lengkap -->
+                <div class="col-md-6">
+                  <label for="nama" class="form-label">
+                    Nama Lengkap <span class="required-mark">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="nama" 
+                    name="nama" 
+                    value="<%= mahasiswa.nama %>"
+                    placeholder="Contoh: Andi Pratama"
+                    required>
+                </div>
+
+                <!-- Jurusan -->
+                <div class="col-md-6">
+                  <label for="jurusan" class="form-label">
+                    Jurusan <span class="required-mark">*</span>
+                  </label>
+                  <select name="jurusan" id="jurusan" class="form-select" required>
+                    <option value="" disabled>Pilih jurusan</option>
+                    <% daftarJurusan.forEach(jurusan => { %>
+                      <option value="<%= jurusan %>" 
+                              <%= mahasiswa.jurusan === jurusan ? 'selected' : '' %>>
+                        <%= jurusan %>
+                      </option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <!-- Angkatan -->
+                  <div class="col-md-6">
+                    <label for="angkatan" class="form-label">Angkatan <span class="required-mark">*</span></label>
+                      <div class="col-sm-10">
+                        <input
+                          type="number"
+                          name="angkatan"
+                          class="form-control"
+                          value="<%= mahasiswa.angkatan %>"
+                          required
+                        />
+                      </div>
+                  </div>
+
+                <!-- Alamat -->
+                <div class="col-12">
+                  <label for="alamat" class="form-label">
+                    Alamat <span class="required-mark">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="alamat" 
+                    name="alamat" 
+                    value="<%= mahasiswa.alamat %>"
+                    placeholder="Contoh: Jl. Merdeka No. 45, Jakarta Selatan"
+                    required>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-end gap-2 mt-4 pt-2">
+                <a href="/mahasiswa" class="btn btn-cancel">
+                  <i class="bi bi-x me-1"></i>
+                  Batal
+                </a>
+                <button type="submit" class="btn btn-success-custom">
+                  Simpan Perubahan
+                </button>
+              </div>
+
+            </form>
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label for="nama" class="col-sm-2 col-form-label">Nama Lengkap</label>
-          <div class="col-sm-10">
-            <input
-              type="text"
-              name="nama"
-              class="form-control"
-              value="<%= mahasiswa.nama %>"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label for="jurusan" class="col-sm-2 col-form-label">Jurusan</label>
-          <div class="col-sm-10">
-            <input
-              type="text"
-              name="jurusan"
-              class="form-control"
-              value="<%= mahasiswa.jurusan %>"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label for="angkatan" class="col-sm-2 col-form-label">Angkatan</label>
-          <div class="col-sm-10">
-            <input
-              type="number"
-              name="angkatan"
-              class="form-control"
-              value="<%= mahasiswa.angkatan %>"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label for="alamat" class="col-sm-2 col-form-label"
-            >Alamat Lengkap</label
-          >
-          <div class="col-sm-10">
-            <input
-              type="text"
-              name="alamat"
-              class="form-control"
-              value="<%= mahasiswa.alamat %>"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <button type="submit" class="btn btn-success">
-            Simpan Perubahan
-          </button>
-          <a href="/mahasiswa" class="btn btn-secondary ms-2">Batal</a>
-        </div>
-      </form>
+      </div>
     </div>
+  </main>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <!-- FOOTER (TIDAK DIRUBAH) -->
+  <footer class="border-top mt-auto py-4 bg-white">
+    <div class="container">
+      <p class="text-center text-muted mb-0 small">
+        © <%= new Date().getFullYear() %> Sistem Manajemen Mahasiswa - STMIK KAPUTAMA
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

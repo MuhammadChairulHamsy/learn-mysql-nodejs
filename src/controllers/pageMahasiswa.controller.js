@@ -4,9 +4,27 @@ import db from "../config/db.js";
 export const getMahasiswaPage = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM mahasiswa ORDER BY nim");
+
+    const defaultJurusan = [
+      "Sistem informasi",
+      "Teknik informatika",
+      "Manajemen informatika",
+      "Komputerisasi akuntansi",
+      "Bisnis digital",
+    ];
+
+    // Gabungkan dan buat unik, urutkan A-Z
+    const semuaJurusan = [
+      ...new Set([
+        ...defaultJurusan,
+        ...rows.map((m) => m.jurusan).filter((j) => j && j.trim() !== ""),
+      ]),
+    ].sort();
+
     res.render("index", {
       mahasiswa: rows,
       title: "Dashboard",
+      daftarJurusan: semuaJurusan,
     });
   } catch (error) {
     console.error("Database error:", error);
@@ -26,9 +44,29 @@ export const getEditPage = async (req, res) => {
       return res.status(404).send("Mahasiswa tidak ditemukan");
     }
 
+    const defaultJurusan = [
+      "Teknik informatika",
+      "Sistem informasi",
+      "Manajemen informatika",
+      "Komputerisasi akuntansi",
+      "Bisnis digital",
+    ];
+
+    // Ambil daftar jurusan unik untuk dropdown (sama seperti di halaman utama)
+    const [allRows] = await db.query(
+      "SELECT DISTINCT jurusan FROM mahasiswa WHERE jurusan IS NOT NULL AND jurusan != ''"
+    );
+
+    const dbJurusan = allRows.map((row) => row.jurusan.trim());
+
+    const daftarJurusan = [
+      ...new Set([...defaultJurusan, ...dbJurusan]),
+    ].sort();
+
     res.render("edit", {
       mahasiswa: rows[0],
       title: "Edit Mahasiswa",
+      daftarJurusan: daftarJurusan,
     });
   } catch (error) {
     console.error("Database error:", error);
@@ -60,7 +98,7 @@ export const updateMahasiswa = async (req, res) => {
         .send("Mahasiswa tidak ditemukan atau data tidak berubah");
     }
 
-    res.redirect("/mahasiswa"); 
+    res.redirect("/mahasiswa");
   } catch (error) {
     console.error("Update error:", error);
     res.status(500).send("Gagal menyimpan perubahan");
@@ -80,25 +118,24 @@ export const tambahMahasiswa = async (req, res) => {
     res.redirect("/mahasiswa");
   } catch (error) {
     console.error("Insert error:", error);
-    res.status(500).send("Gagal menambahkan mahasiswa");
+    res.status(500).send("Nim Tidak Boleh Sama Gagal Menambahkan Mahasiswa");
   }
 };
 
-
-export const deleteMahasiswa =  async (req, res) => {
+export const deleteMahasiswa = async (req, res) => {
   try {
-    const {nim} = req.params;
+    const { nim } = req.params;
 
     const sql = `DELETE FROM mahasiswa WHERE nim = ?`;
     const [result] = await db.query(sql, [nim]);
 
-    if(result.affectedRows === 0) {
+    if (result.affectedRows === 0) {
       res.status(404).send("Mahasiswa tidak di temukan");
     }
 
     res.redirect("/mahasiswa");
   } catch (error) {
     console.error("Delete error: ", error);
-    res.status(500).send("Gagal menghapus mahasiswa")
+    res.status(500).send("Gagal menghapus mahasiswa");
   }
-}
+};

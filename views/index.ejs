@@ -3,21 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Belajar Nodejs Mysql</title>
+    <title>Dashboard - Sistem Manajemen Mahasiswa</title>
+    <!-- Bootstrap 5.3 (update dari 5.0.2) -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
     <style>
-      /* Gradient header mirip Tailwind (biru ke ungu atau sesuaikan) */
       .gradient-header {
-        background: linear-gradient(
-          135deg,
-          #3b82f6,
-          #8b5cf6
-        ); /* blue-500 to purple-500 */
+        background: linear-gradient(135deg, #3b82f6, #0062ff);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
       .text-primary-foreground {
@@ -26,12 +25,30 @@
       .bg-primary-foreground-20 {
         background-color: rgba(255, 255, 255, 0.2);
       }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hover-shadow {
+        transition: all 0.3s ease;
+      }
+      .hover-shadow:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+      }
     </style>
   </head>
-  <body>
+  <body class="bg-light">
+    <!-- Header/Navbar -->
     <header class="gradient-header shadow-sm sticky-top">
       <nav class="navbar navbar-expand-md">
-        <div class="container-fluid px-4 py-1">
+        <div class="container-fluid px-5">
           <!-- py-3 untuk tinggi mirip h-16 Tailwind -->
           <!-- Logo + Judul -->
           <a
@@ -39,23 +56,9 @@
             href="#"
           >
             <div
-              class="bg-primary-foreground-20 p-2 rounded-3 me-3 d-flex align-items-center justify-content-center"
+              class="bg-primary-foreground-20 p-1 rounded-3 me-3 d-flex align-items-center justify-content-center"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="currentColor"
-                class="bi bi-mortarboard-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z"
-                />
-                <path
-                  d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z"
-                />
-              </svg>
+              <i class="bi bi-mortarboard-fill fs-4"></i>
             </div>
             <div>
               <h1 class="h5 mb-0 fw-bold text-primary-foreground">
@@ -79,107 +82,157 @@
       </nav>
     </header>
 
-    <main class="container mx-auto px-4 py-6">
-      <div class="mb-6">
-        <h3 class="mt-3 fs-4 fw-bold"><%= title %></h3>
-        <p class="text-xs">Kelola data mahasiswa dengan mudah dan efisien</p>
+    <main class="container min-vh-100 px-4 py-5">
+      <!-- Hero Section -->
+      <div class="mb-3">
+        <h1 class="fs-3 fw-bold text-dark mb-2"><%= title %></h1>
+        <p class="text-muted mb-0">
+          Kelola data mahasiswa dengan mudah dan efisien
+        </p>
       </div>
 
+      <!-- Hitung statistik -->
+      <% const totalStudents = mahasiswa.length; const totalJurusan = [...new
+      Set(mahasiswa.map(m => m.jurusan))].length; %>
+
+      <!-- Include Stats Card -->
+      <%- include('partials/stats-card', { totalStudents, totalJurusan }) %>
       <div class="mb-4">
         <h3 class="fs-5 fw-semibold">Daftar Mahasiswa</h3>
-        <p class="text-sm">Menampilkan mahasiswa terdaftar</p>
+        <p class="fw-3">
+          Menampilkan mahasiswa <%= mahasiswa.length %> terdaftar
+        </p>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">No</th>
-            <th scope="col">nim</th>
-            <th scope="col">nama</th>
-            <th scope="col">jurusan</th>
-            <th scope="col">angkatan</th>
-            <th scope="col">alamat</th>
-            <th scope="col" class="text-center">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% mahasiswa.forEach((mhs, i) => { %>
-          <tr>
-            <th scope="row"><%= i + 1 %></th>
-            <td><%= mhs.nim %></td>
-            <td><%= mhs.nama %></td>
-            <td><%= mhs.jurusan %></td>
-            <td><%= mhs.angkatan %></td>
-            <td><%= mhs.alamat %></td>
-            <td class="text-center">
-              <a
-                href="/mahasiswa/edit/<%= mhs.nim %>"
-                class="btn btn-warning btn-sm"
-                >Edit</a
-              >
-              <form
-                action="/mahasiswa/hapus/<%= mhs.nim %>"
-                method="post"
-                style="display: inline"
-                onsubmit="return confirm('Yakin ingin menghapus mahasiswa <%= mhs.nama %> (NIM: <%= mhs.nim %>)? Data akan hilang permanen!');"
-              >
-                <button type="submit" class="btn btn-danger btn-sm">
-                  Hapus
-                </button>
-              </form>
-            </td>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
+      <!-- Tabel Mahasiswa -->
+      <div class="card shadow-sm mb-5">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>No</th>
+                  <th>NIM</th>
+                  <th>Nama</th>
+                  <th>Jurusan</th>
+                  <th>Angkatan</th>
+                  <th>Alamat</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% mahasiswa.forEach((mhs, i) => { %>
+                <tr>
+                  <th><%= i + 1 %></th>
+                  <td><strong><%= mhs.nim %></strong></td>
+                  <td><%= mhs.nama %></td>
+                  <td><%= mhs.jurusan %></td>
+                  <td>
+                    <span class="badge bg-light text-primary"
+                      ><%= mhs.angkatan %></span
+                    >
+                  </td>
+                  <td><%= mhs.alamat %></td>
+                  <td class="text-center">
+                    <a
+                      href="/mahasiswa/edit/<%= mhs.nim %>"
+                      class="btn btn-warning btn-sm me-2"
+                      ><i class="bi bi-pencil-square me-2"></i>Edit</a
+                    >
+                    <form
+                      action="/mahasiswa/hapus/<%= mhs.nim %>"
+                      method="post"
+                      style="display: inline"
+                      onsubmit="return confirm('Yakin hapus <%= mhs.nama %> (NIM: <%= mhs.nim %>)?');"
+                    >
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-      <div class="mt-3">
-        <form action="/api/mahasiswa/tambah" method="post">
-          <h4>Tambah Mahasiswa Baru</h4>
-          <div class="row mb-3">
-            <label for="nim" class="col-sm-2 col-form-label">Nim</label>
-            <div class="col-sm-10">
-              <input type="number" name="nim" class="form-control" />
+      <!-- Form Tambah (Pindah ke Card) -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Tambah Mahasiswa Baru</h5>
+        </div>
+        <div class="card-body">
+          <form action="/mahasiswa/tambah" method="post">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">NIM</label>
+                <input type="number" name="nim" class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Angkatan</label>
+                <input
+                  type="number"
+                  name="angkatan"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" name="nama" class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label for="jurusan" class="form-label">Jurusan</label>
+                <select
+                  name="jurusan"
+                  id="jurusan"
+                  class="form-select"
+                  required
+                >
+                  <option value="" selected disabled>
+                    -- Pilih Jurusan --
+                  </option>
+                  <% daftarJurusan.forEach(jurusan => { %>
+                  <option value="<%= jurusan %>"><%= jurusan %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Alamat</label>
+                <input
+                  type="text"
+                  name="alamat"
+                  class="form-control"
+                  required
+                />
+              </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="nama" class="col-sm-2 col-form-label"
-              >Nama Lengkap</label
-            >
-            <div class="col-sm-10">
-              <input type="text" name="nama" class="form-control" />
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary btn-md">
+                Tambah Mahasiswa
+              </button>
+              <a href="#" class="btn btn-outline-secondary btn-md ms-2"
+                ><i class="bi bi-x me-2"></i>Batal</a
+              >
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="jurusan" class="col-sm-2 col-form-label">Jurusan</label>
-            <div class="col-sm-10">
-              <input type="text" name="jurusan" class="form-control" />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="angkatan" class="col-sm-2 col-form-label"
-              >Angkatan</label
-            >
-            <div class="col-sm-10">
-              <input type="number" name="angkatan" class="form-control" />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="alamat" class="col-sm-2 col-form-label"
-              >Alamat Lengkap</label
-            >
-            <div class="col-sm-10">
-              <input type="text" name="alamat" class="form-control" />
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Tambahkan</button>
-        </form>
+          </form>
+        </div>
       </div>
     </main>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+    <footer class="border-top mt-5 py-4 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p class="text-center text-muted mb-0 small">
+              © 2026 Sistem Manajemen Mahasiswa - STMIK KAPUTAMA
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
