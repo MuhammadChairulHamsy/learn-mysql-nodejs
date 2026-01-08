@@ -1,0 +1,96 @@
+.gradient-header {
+  background: linear-gradient(135deg, #3b82f6, #0062ff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.text-primary-foreground {
+  color: white !important;
+}
+.bg-primary-foreground-20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Card styling mirip Tailwind shadow-card */
+.card-custom {
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.card-header-custom {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1rem 1.5rem;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.required-mark {
+  color: #dc3545;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.15);
+}
+
+.btn-back {
+  color: #6b7280;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s;
+  background: transparent;
+  border: none;
+}
+
+.btn-back:hover {
+  color: #374151;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-success-custom {
+  background-color: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.btn-success-custom:hover {
+  background-color: #059669;
+  border-color: #059669;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #6b7280;
+  border-color: #6b7280;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #4b5563;
+  border-color: #4b5563;
+  color: white;
+}

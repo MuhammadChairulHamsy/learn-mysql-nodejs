@@ -1,0 +1,143 @@
+.gradient-header {
+  background: linear-gradient(135deg, #3b82f6, #0062ff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.text-primary-foreground {
+  color: white !important;
+}
+.bg-primary-foreground-20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+/* Card styling */
+    .card-custom {
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .card-header-collapsible {
+      background-color: rgba(0, 0, 0, 0.02);
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      border: none;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
+
+    .card-header-collapsible:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .card-header-collapsible h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .btn-add-collapsed {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s;
+      font-size: 1rem;
+    }
+
+    .btn-add-collapsed:hover {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-add-collapsed:focus {
+      box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+    }
+
+    .toggle-icon {
+      transition: transform 0.3s ease;
+      color: #6b7280;
+      font-size: 1rem;
+    }
+
+    .btn-add-collapsed[aria-expanded="true"] .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      font-size: 0.875rem;
+    }
+
+    .required-mark {
+      color: #dc3545;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.15);
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .btn-cancel {
+      background-color: #6b7280;
+      border-color: #6b7280;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: #4b5563;
+      border-color: #4b5563;
+      color: white;
+    }
+
+    .card-header-border {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hover-shadow {
+  transition: all 0.3s ease;
+}
+.hover-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}

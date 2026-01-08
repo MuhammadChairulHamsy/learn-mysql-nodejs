@@ -5,7 +5,7 @@ export const getMahasiswaPage = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM mahasiswa ORDER BY nim");
 
-    const defaultJurusan = [
+    const defaultMajor = [
       "Sistem informasi",
       "Teknik informatika",
       "Manajemen informatika",
@@ -13,10 +13,10 @@ export const getMahasiswaPage = async (req, res) => {
       "Bisnis digital",
     ];
 
-    // Gabungkan dan buat unik, urutkan A-Z
-    const semuaJurusan = [
+
+    const allMajor = [
       ...new Set([
-        ...defaultJurusan,
+        ...defaultMajor,
         ...rows.map((m) => m.jurusan).filter((j) => j && j.trim() !== ""),
       ]),
     ].sort();
@@ -24,7 +24,7 @@ export const getMahasiswaPage = async (req, res) => {
     res.render("index", {
       mahasiswa: rows,
       title: "Dashboard",
-      daftarJurusan: semuaJurusan,
+      listOfMajors: allMajor,
     });
   } catch (error) {
     console.error("Database error:", error);
@@ -44,7 +44,7 @@ export const getEditPage = async (req, res) => {
       return res.status(404).send("Mahasiswa tidak ditemukan");
     }
 
-    const defaultJurusan = [
+    const defaultMajor = [
       "Teknik informatika",
       "Sistem informasi",
       "Manajemen informatika",
@@ -59,14 +59,14 @@ export const getEditPage = async (req, res) => {
 
     const dbJurusan = allRows.map((row) => row.jurusan.trim());
 
-    const daftarJurusan = [
-      ...new Set([...defaultJurusan, ...dbJurusan]),
+    const listOfMajors = [
+      ...new Set([...defaultMajor, ...dbJurusan]),
     ].sort();
 
     res.render("edit", {
       mahasiswa: rows[0],
       title: "Edit Mahasiswa",
-      daftarJurusan: daftarJurusan,
+      listOfMajors: listOfMajors,
     });
   } catch (error) {
     console.error("Database error:", error);
