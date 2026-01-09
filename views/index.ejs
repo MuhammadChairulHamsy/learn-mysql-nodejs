@@ -92,7 +92,7 @@
                   <th style="max-width: 210px;">Jurusan</th>
                   <th style="max-width: 210px;">Angkatan</th>
                   <th style="max-width: 250px;">Alamat</th>
-                  <th class="text-center" style="max-width: 60px;">Aksi</th>
+                  <th class="text-center" style="max-width: 250px;">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,10 +109,10 @@
                   </td>
                   <td><%= mhs.alamat %></td>
                   <td class="text-center">
-                       <div class="m-2">
+                       <div class="d-flex gap-2">
                     <a
                       href="/mahasiswa/edit/<%= mhs.nim %>"
-                      class="btn btn-warning btn-sm "
+                      class="btn btn-warning btn-sm d-flex"
                       ><i class="bi bi-pencil-square me-2"></i>Edit</a
                     >
                     <form
