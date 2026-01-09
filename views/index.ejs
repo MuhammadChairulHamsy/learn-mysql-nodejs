@@ -80,54 +80,58 @@
         </p>
       </div>
       <!-- Tabel Mahasiswa -->
-     <div class="card shadow-sm mb-5">
-  <div class="card-body p-0">
-    <div class="table-responsive">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="table-light">
-          <tr>
-            <th class="ps-3">No</th>
-            <th>Mahasiswa</th> <th class="d-none d-md-table-cell">Jurusan</th> <th class="d-none d-lg-table-cell">Angkatan</th> <th class="d-none d-xl-table-cell">Alamat</th> <th class="text-center pe-3">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% mahasiswa.forEach((mhs, i) => { %>
-          <tr>
-            <th class="ps-3"><%= i + 1 %></th>
-            <td>
-              <div class="fw-bold text-primary"><%= mhs.nama %></div>
-              <small class="text-muted"><%= mhs.nim %></small>
-              
-              <div class="d-md-none mt-1">
-                <span class="badge bg-light text-dark border" style="font-size: 0.7rem;"><%= mhs.jurusan %></span>
-              </div>
-            </td>
-            <td class="d-none d-md-table-cell"><%= mhs.jurusan %></td>
-            <td class="d-none d-lg-table-cell">
-              <span class="badge bg-light text-primary"><%= mhs.angkatan %></span>
-            </td>
-            <td class="d-none d-xl-table-cell text-truncate" style="max-width: 200px;">
-              <%= mhs.alamat %>
-            </td>
-            <td class="text-center pe-3">
-              <div class="d-flex justify-content-center gap-1">
-                <a href="/mahasiswa/edit/<%= mhs.nim %>" class="btn btn-warning btn-sm">
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-                <form action="/mahasiswa/hapus/<%= mhs.nim %>" method="post" onsubmit="return confirm('Hapus <%= mhs.nama %>?');">
-                  <button type="submit" class="btn btn-danger btn-sm">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </form>
-              </div>
-            </td>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+      <div class="card shadow-sm mb-5">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>No</th>
+                  <th>NIM</th>
+                  <th>Nama</th>
+                  <th>Jurusan</th>
+                  <th>Angkatan</th>
+                  <th>Alamat</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% mahasiswa.forEach((mhs, i) => { %>
+                <tr>
+                  <th><%= i + 1 %></th>
+                  <td><strong><%= mhs.nim %></strong></td>
+                  <td><%= mhs.nama %></td>
+                  <td><%= mhs.jurusan %></td>
+                  <td>
+                    <span class="badge bg-light text-primary"
+                      ><%= mhs.angkatan %></span
+                    >
+                  </td>
+                  <td><%= mhs.alamat %></td>
+                  <td class="text-center">
+                    <a
+                      href="/mahasiswa/edit/<%= mhs.nim %>"
+                      class="btn btn-warning btn-sm me-2"
+                      ><i class="bi bi-pencil-square me-2"></i>Edit</a
+                    >
+                    <form
+                      action="/mahasiswa/hapus/<%= mhs.nim %>"
+                      method="post"
+                      style="display: inline"
+                      onsubmit="return confirm('Yakin hapus <%= mhs.nama %> (NIM: <%= mhs.nim %>)?');"
+                    >
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
      <!-- Form Tambah Mahasiswa - Collapsible -->
         <div class="card card-custom animate-fade-in">
